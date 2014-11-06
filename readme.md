@@ -12,7 +12,7 @@ Easy Service Discovery on Local Networks in pure Javascript.
 
 ## Get started (see example folder for more)
 ```javascript
-var diont = require('../diont.js')();
+var diont = require('diont')();
 
 // ======
 // Listen for announcements and renouncements in services
