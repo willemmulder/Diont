@@ -90,7 +90,6 @@ module.exports = function(options){
 			}
 		} catch(e) {
 			// ignore...
-			console.log(e);
 		}
 	});
 
