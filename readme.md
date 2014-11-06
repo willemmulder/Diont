@@ -8,7 +8,14 @@ Easy Service Discovery on Local Networks in pure Javascript.
 * 100% complete: no node dependencies
 * allows for transmitting extra, arbitrary service information
 * includes examples
-* also available for Phonegap (in the works)
+* also available for Cordova/Phonegap as [Diont for Cordova](https://github.com/willemmulder/Diont-for-Cordova)
+
+## Installation
+Install the plugin with npm using this command
+
+```shell
+npm install diont
+```
 
 ## Get started (see example folder for more)
 ```javascript

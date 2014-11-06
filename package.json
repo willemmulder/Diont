@@ -1,6 +1,6 @@
 {
   "name": "diont",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "description": "Easy Service Discovery on Local Networks in pure Javascript",
   "main": "diont.js",
   "scripts": {
