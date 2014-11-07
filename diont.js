@@ -4,7 +4,7 @@ var dgram = require("dgram");
 var socket = dgram.createSocket('udp4');
 
 var MULTICAST_HOST = "224.0.0.236";
-var MULTICAST_PORT = 80;
+var MULTICAST_PORT = 60540;
 
 module.exports = function(options){
 
