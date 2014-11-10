@@ -55,3 +55,12 @@ setTimeout(function() {
 	diont.renounceService(service);
 }, 5000);
 ```
+
+## Trouble shooting
+If service-messages are not propagated properly (especially on wifi connections), there's a plenty of trouble in Wifi routers that might cause it (see http://superuser.com/questions/730288/why-do-some-wifi-routers-block-multicast-packets-going-from-wired-to-wireless). Diont can also use `broadcast` instead of `multicast` to send its messages, which should work a little more reliable, but clutters the network a bit more. You can use `broadcast` like this:
+
+```javascript
+var diont = require('diont')({
+	broacast: true
+});
+```

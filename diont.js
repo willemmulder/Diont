@@ -4,7 +4,8 @@ var dgram = require("dgram");
 var socket = dgram.createSocket('udp4');
 
 var MULTICAST_HOST = "224.0.0.236";
-var MULTICAST_PORT = 60540;
+var BROADCAST_HOST = "255.255.255.255";
+var ALL_PORT = 60540;
 
 module.exports = function(options){
 
@@ -15,26 +16,38 @@ module.exports = function(options){
 	var events = {};
 
 	var options = options || {};
-	var host = options.host || MULTICAST_HOST;
-	var port = options.port || MULTICAST_PORT;
+
+	var broadcast = !!options.broadcast;
+
+	var multicastHost = options.host || MULTICAST_HOST;
+	var port = options.port || ALL_PORT;
+	var sendHost = (broadcast ? BROADCAST_HOST : multicastHost);
 
 	// Services is a map (service.host+":"+service.port+":"+service.name) => Object serviceInfo
 	// where serviceInfo is an object like
 	// { isOurService : Boolean, service: Object }
 
 	// =====
-	// Set up UDP Multicast connection
+	// Set up UDP Broadcast/Multicast connection
 	// =====
 
 	socket.bind(port);
 	socket.on('listening', function() {
-		socket.setMulticastTTL(1); // Local network
-		socket.addMembership(host); // Tell the OS to listen for messages on the specified host and treat them as if they were meant for this host
 		socket.setMulticastLoopback(true);
+		socket.setMulticastTTL(1); // Local network
+		socket.addMembership(multicastHost); // Tell the OS to listen for messages on the specified host and treat them as if they were meant for this host
+		if(broadcast) {
+			socket.setBroadcast(true);
+		}
 		queryForServices();
 	});
+	socket.on('message', parseMessage);
 
-	socket.on('message', function(message, rinfo) {
+	// =====
+	// Function to parse incoming messages
+	// =====
+
+	function parseMessage(message, rinfo) {
 		try {
 			var messageObject = JSON.parse(message);
 			var eventType = messageObject.eventType;
@@ -91,7 +104,7 @@ module.exports = function(options){
 		} catch(e) {
 			// ignore...
 		}
-	});
+	};
 
 	// =====
 	// Exported functions
@@ -174,7 +187,7 @@ module.exports = function(options){
 		}
 		var message = JSON.stringify(messageObject);
 		var buffer = new Buffer(message);
-		socket.send(buffer, 0, buffer.length, port, host);
+		socket.send(buffer, 0, buffer.length, port, sendHost);
 	}
 
 	function sendRenouncement(serviceInfo) {
@@ -191,7 +204,7 @@ module.exports = function(options){
 		}
 		var message = JSON.stringify(messageObject);
 		var buffer = new Buffer(message);
-		socket.send(buffer, 0, buffer.length, port, host);
+		socket.send(buffer, 0, buffer.length, port, sendHost);
 	}
 
 	function queryForServices() {
@@ -201,7 +214,7 @@ module.exports = function(options){
 		}
 		var message = JSON.stringify(messageObject);
 		var buffer = new Buffer(message);
-		socket.send(buffer, 0, buffer.length, port, host);
+		socket.send(buffer, 0, buffer.length, port, sendHost);
 	}
 
 	function guid() {

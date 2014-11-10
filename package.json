@@ -1,6 +1,6 @@
 {
   "name": "diont",
-  "version": "0.9.2",
+  "version": "0.9.3",
   "description": "Easy Service Discovery on Local Networks in pure Javascript",
   "main": "diont.js",
   "scripts": {
@@ -13,6 +13,7 @@
   "keywords": [
     "udp",
     "multicast",
+    "broadcast",
     "service",
     "discovery",
     "mdns",

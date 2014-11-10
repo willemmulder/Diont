@@ -1,4 +1,6 @@
-var diont = require('../diont.js')();
+var diont = require('../diont.js')({
+	broadcast: true
+});
 
 // ======
 // Listen for announcements and renouncements in services
