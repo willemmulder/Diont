@@ -112,13 +112,19 @@ module.exports = function(options){
 			}
 			sendAnnouncement(serviceInfo);
 		}
+		return id;
 	}
 
 	exports.renounceService = function(service) {
-		if (!service.host || !service.port || !service.name) {
-			return false;
+		var id;
+		if (typeof service == 'string') {
+			id = service;
+		} else {
+			if (!service.host || !service.port || !service.name) {
+				return false;
+			}
+			id = service.host + ":" + service.port + ":" + service.name;
 		}
-		var id = service.host + ":" + service.port + ":" + service.name;
 		if(serviceInfos[id] && serviceInfos[id].isOurService) {
 			sendRenouncement(serviceInfos[id]);
 			delete serviceInfos[id];
