@@ -6,6 +6,7 @@ var socket = dgram.createSocket('udp4');
 var MULTICAST_HOST = "224.0.0.236";
 var BROADCAST_HOST = "255.255.255.255";
 var ALL_PORT = 60540;
+var MULTICAST_TTL = 1; // Local network
 
 module.exports = function(options){
 
@@ -21,6 +22,7 @@ module.exports = function(options){
 
 	var multicastHost = options.host || MULTICAST_HOST;
 	var port = options.port || ALL_PORT;
+	var ttl = options.ttl || MULTICAST_TTL;
 	var sendHost = (broadcast ? BROADCAST_HOST : multicastHost);
 
 	// Services is a map (service.host+":"+service.port+":"+service.name) => Object serviceInfo
@@ -34,7 +36,7 @@ module.exports = function(options){
 	socket.bind(port);
 	socket.on('listening', function() {
 		socket.setMulticastLoopback(true);
-		socket.setMulticastTTL(1); // Local network
+		socket.setMulticastTTL(ttl);
 		socket.addMembership(multicastHost); // Tell the OS to listen for messages on the specified host and treat them as if they were meant for this host
 		if(broadcast) {
 			socket.setBroadcast(true);
