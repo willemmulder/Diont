@@ -74,3 +74,8 @@ var diont = require('diont')({
 	broacast: true
 });
 ```
+
+## Suggested reads
+* Nice blogpost with considerations about service discovery and how to do them. http://hintjens.com/blog:32
+* Another UDP discovery library by the friendly mafintosh. https://github.com/mafintosh/polo
+* Pure javascript implementation of Multicast DNS by the same mafintosh. https://github.com/mafintosh/multicast-dns
