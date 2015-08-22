@@ -57,7 +57,10 @@ setTimeout(function() {
 ```
 
 ## Trouble shooting
-If service-messages are not propagated properly (especially on wifi connections), there's a plenty of trouble in Wifi routers that might cause it (see http://superuser.com/questions/730288/why-do-some-wifi-routers-block-multicast-packets-going-from-wired-to-wireless). 
+
+If service-messages are not propagated properly (especially on wifi connections), there's a plenty of trouble in Wifi routers that might cause it (see http://superuser.com/questions/730288/why-do-some-wifi-routers-block-multicast-packets-going-from-wired-to-wireless).
+
+### Manual TTL
 
 Diont supports manual setting of the TTL. From experience, the default TTL of 1 does not always cause routers to forward the service-messages to the whole network, so you might want to try higher values and see if that works.
 
@@ -67,6 +70,8 @@ var diont = require('diont')({
 });
 ```
 
+### Broadcast
+
 Diont can also use `broadcast` instead of `multicast` to send its messages, which should work a little more reliable, but clutters the network a bit more. You can use `broadcast` like this:
 
 ```javascript
@@ -74,6 +79,16 @@ var diont = require('diont')({
 	broacast: true
 });
 ```
+
+### Refreshing Services
+
+If you're experiencing a situation where Diont [stops working after awhile](https://github.com/willemmulder/Diont/issues/2) you might actually just need to trigger a manual query.
+
+```
+diont.queryForServices();
+```
+
+This causes Diont to send a UDP packet to the network with event "query". Diont servers are designed to take this event and re-broadcast their registered services. This re-broadcasting does not happen automatically on an interval -- so if you need that you must use this method.
 
 ## Suggested reads
 * Nice blogpost with considerations about service discovery and how to do them. http://hintjens.com/blog:32
