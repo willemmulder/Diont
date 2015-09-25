@@ -1,7 +1,7 @@
 
 var os = require("os");
 var dgram = require("dgram");
-var socket = dgram.createSocket('udp4');
+var socket = dgram.createSocket({type: 'udp4', reuseAddr: true, toString: function () { return 'udp4' }});
 
 var MULTICAST_HOST = "224.0.0.236";
 var BROADCAST_HOST = "255.255.255.255";
