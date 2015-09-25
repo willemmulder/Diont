@@ -146,6 +146,13 @@ module.exports = function(options){
 		}
 	}
 
+	exports.repeatAnnouncements = function() {
+		for(var id in serviceInfos) {
+			var serviceInfo = serviceInfos[id];
+			sendAnnouncement(serviceInfo);
+		}
+	}
+
 	exports.queryForServices = function() {
 		queryForServices();
 	}
