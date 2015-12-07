@@ -236,14 +236,21 @@ module.exports = function(options){
 	function getNetworkIPAddress() {
 		var ifaces = os.networkInterfaces();
 		var addresses = [];
+		var localAddress;
 		for (var dev in ifaces) {
 			ifaces[dev].forEach(function(details){
 				if (details.family=='IPv4' && details.internal === false) {
 					addresses.push(details.address);
+					if (details.address.indexOf('192.168.') === 0) {
+						localAddress = details.address;
+					}
 				}
 			});
 		}
-		// Only return the first IP address
+		// Return a 192.168.x.x address if possible, otherwise return the first address found
+		if (localAddress) {
+			return localAddress;
+		}
 		return addresses[0];
 	}
 
