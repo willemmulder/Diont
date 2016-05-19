@@ -3,6 +3,9 @@
 Easy Service Discovery on Local Networks in pure Javascript.
 
 
+## Used in
+* [Sniper](https://lunarline.com/sniper) A real-time, collaborative penetration testing framework
+
 ## Features
 * 100% javascript: no external dependencies
 * 100% complete: no node dependencies
