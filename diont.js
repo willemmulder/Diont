@@ -1,29 +1,29 @@
 
-var os = require("os");
-var dgram = require("dgram");
-var socket = dgram.createSocket({type: 'udp4', reuseAddr: true, toString: function () { return 'udp4' }});
+import os from "os";
+import dgram from "dgram";
+const socket = dgram.createSocket({type: 'udp4', reuseAddr: true, toString: function () { return 'udp4' }});
 
-var MULTICAST_HOST = "224.0.0.236";
-var BROADCAST_HOST = "255.255.255.255";
-var ALL_PORT = 60540;
-var MULTICAST_TTL = 1; // Local network
+const MULTICAST_HOST = "224.0.0.236";
+const BROADCAST_HOST = "255.255.255.255";
+const ALL_PORT = 60540;
+const MULTICAST_TTL = 1; // Local network
 
-module.exports = function(options){
+export default function Diont(options){
 
-	var instanceId = guid();
+	let instanceId = guid();
 
-	var exports = {};
-	var serviceInfos = {};
-	var events = {};
+	let exports = {};
+	let serviceInfos = {};
+	let events = {};
 
-	var options = options || {};
+	options = options || {};
 
-	var broadcast = !!options.broadcast;
+	let broadcast = !!options.broadcast;
 
-	var multicastHost = options.host || MULTICAST_HOST;
-	var port = options.port || ALL_PORT;
-	var ttl = options.ttl || MULTICAST_TTL;
-	var sendHost = (broadcast ? BROADCAST_HOST : multicastHost);
+	let multicastHost = options.host || MULTICAST_HOST;
+	let port = options.port || ALL_PORT;
+	let ttl = options.ttl || MULTICAST_TTL;
+	let sendHost = (broadcast ? BROADCAST_HOST : multicastHost);
 
 	// Services is a map (service.host+":"+service.port+":"+service.name) => Object serviceInfo
 	// where serviceInfo is an object like
@@ -51,51 +51,51 @@ module.exports = function(options){
 
 	function parseMessage(message, rinfo) {
 		try {
-			var messageObject = JSON.parse(message);
-			var eventType = messageObject.eventType;
-			var fromDiontId = messageObject.fromDiontInstance;
+			let messageObject = JSON.parse(message);
+			let eventType = messageObject.eventType;
+			let fromDiontId = messageObject.fromDiontInstance;
 			if (fromDiontId == instanceId) {
 				return;
 			}
 			if (eventType == "query") {
-				var serviceInfosToAnnounce = [];
-				for(var index in serviceInfos) {
+				let serviceInfosToAnnounce = [];
+				for(let index in serviceInfos) {
 					serviceInfosToAnnounce.push(serviceInfos[index]);
 				}
 				sendAnnouncement(serviceInfosToAnnounce);
 			} else {
-				var receivedServiceInfos = messageObject.serviceInfos;
-				for(var serviceInfoIndex in receivedServiceInfos) {
-					var serviceInfo = receivedServiceInfos[serviceInfoIndex];
+				let receivedServiceInfos = messageObject.serviceInfos;
+				for(let serviceInfoIndex in receivedServiceInfos) {
+					let serviceInfo = receivedServiceInfos[serviceInfoIndex];
 					if(!serviceInfo.service) {
 						continue;
 					}
-					var service = serviceInfo.service;
+					let service = serviceInfo.service;
 					if (!service.host || !service.port || !service.name) {
 						continue;
 					}
 					if (eventType == "announce") {
-						var id = service.host + ":" + service.port + ":" + service.name;
+						let id = service.host + ":" + service.port + ":" + service.name;
 						if(!serviceInfos[id]) {
-							var serviceInfo = serviceInfos[id] = {
+							let serviceInfo = serviceInfos[id] = {
 								isOurService: false,
 								service: service
 							}
 							if (events["serviceAnnounced"]) {
-								for(var callbackId in events["serviceAnnounced"]) {
-									var callback = events["serviceAnnounced"][callbackId];
+								for(let callbackId in events["serviceAnnounced"]) {
+									let callback = events["serviceAnnounced"][callbackId];
 									callback(serviceInfo);
 								}
 							}
 						}
 					} else if (eventType == "renounce") {
-						var id = service.host + ":" + service.port + ":" + service.name;
+						let id = service.host + ":" + service.port + ":" + service.name;
 						if(serviceInfos[id]) {
-							var serviceInfo = serviceInfos[id];
+							let serviceInfo = serviceInfos[id];
 							delete serviceInfos[id];
 							if (events["serviceRenounced"]) {
-								for(var callbackId in events["serviceRenounced"]) {
-									var callback = events["serviceRenounced"][callbackId];
+								for(let callbackId in events["serviceRenounced"]) {
+									let callback = events["serviceRenounced"][callbackId];
 									callback(serviceInfo);
 								}
 							}
@@ -119,9 +119,9 @@ module.exports = function(options){
 		if (!service.host || !service.port || !service.name) {
 			return false;
 		}
-		var id = service.host + ":" + service.port + ":" + service.name;
+		let id = service.host + ":" + service.port + ":" + service.name;
 		if(!serviceInfos[id]) {
-			var serviceInfo = serviceInfos[id] = {
+			let serviceInfo = serviceInfos[id] = {
 				isOurService: true,
 				service: service
 			}
@@ -131,7 +131,7 @@ module.exports = function(options){
 	}
 
 	exports.renounceService = function(service) {
-		var id;
+		let id;
 		if (typeof service == 'string') {
 			id = service;
 		} else {
@@ -147,8 +147,8 @@ module.exports = function(options){
 	}
 
 	exports.repeatAnnouncements = function() {
-		for(var id in serviceInfos) {
-			var serviceInfo = serviceInfos[id];
+		for(let id in serviceInfos) {
+			let serviceInfo = serviceInfos[id];
 			sendAnnouncement(serviceInfo);
 		}
 	}
@@ -161,7 +161,7 @@ module.exports = function(options){
 		if(!events[eventName]) {
 			events[eventName] = {};
 		}
-		var callbackId = guid();
+		let callbackId = guid();
 		events[eventName][callbackId] = callback;
 		return callbackId;
 	}
@@ -183,46 +183,46 @@ module.exports = function(options){
 	// =====
 
 	function sendAnnouncement(serviceInfo) {
-		var serviceInfosToAnnounce = [];
+		let serviceInfosToAnnounce = [];
 		if (serviceInfo instanceof Array) {
 			serviceInfosToAnnounce = serviceInfo;
 		} else {
 			serviceInfosToAnnounce = [serviceInfo];
 		}
-		var messageObject = {
+		let messageObject = {
 			eventType: "announce",
 			fromDiontInstance: instanceId,
 			serviceInfos: serviceInfosToAnnounce
 		}
-		var message = JSON.stringify(messageObject);
-		var buffer = new Buffer(message);
+		let message = JSON.stringify(messageObject);
+		let buffer = Buffer.from(message);
 		socket.send(buffer, 0, buffer.length, port, sendHost);
 	}
 
 	function sendRenouncement(serviceInfo) {
-		var serviceInfosToRenounce = [];
+		let serviceInfosToRenounce = [];
 		if (serviceInfo instanceof Array) {
 			serviceInfosToRenounce = serviceInfo;
 		} else {
 			serviceInfosToRenounce = [serviceInfo];
 		}
-		var messageObject = {
+		let messageObject = {
 			eventType: "renounce",
 			fromDiontInstance: instanceId,
 			serviceInfos: serviceInfosToRenounce
 		}
-		var message = JSON.stringify(messageObject);
-		var buffer = new Buffer(message);
+		let message = JSON.stringify(messageObject);
+		let buffer = Buffer.from(message);
 		socket.send(buffer, 0, buffer.length, port, sendHost);
 	}
 
 	function queryForServices() {
-		var messageObject = {
+		let messageObject = {
 			eventType: "query",
 			fromDiontInstance: instanceId
 		}
-		var message = JSON.stringify(messageObject);
-		var buffer = new Buffer(message);
+		let message = JSON.stringify(messageObject);
+		let buffer = Buffer.from(message);
 		socket.send(buffer, 0, buffer.length, port, sendHost);
 	}
 
@@ -234,10 +234,10 @@ module.exports = function(options){
 	}
 
 	function getNetworkIPAddress() {
-		var ifaces = os.networkInterfaces();
-		var addresses = [];
-		var localAddress;
-		for (var dev in ifaces) {
+		let ifaces = os.networkInterfaces();
+		let addresses = [];
+		let localAddress;
+		for (let dev in ifaces) {
 			ifaces[dev].forEach(function(details){
 				if (details.family=='IPv4' && details.internal === false) {
 					addresses.push(details.address);

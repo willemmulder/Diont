@@ -22,7 +22,8 @@ npm install diont
 
 ## Get started (see example folder for more)
 ```javascript
-var diont = require('diont')();
+import Diont from 'diont';
+const diont = Diont();
 
 // ======
 // Listen for announcements and renouncements in services
@@ -68,7 +69,8 @@ If service-messages are not propagated properly (especially on wifi connections)
 Diont supports manual setting of the TTL. From experience, the default TTL of 1 does not always cause routers to forward the service-messages to the whole network, so you might want to try higher values and see if that works.
 
 ```javascript
-var diont = require('diont')({
+import Diont from 'diont';
+const diont = Diont({
 	ttl: 10
 });
 ```
@@ -78,7 +80,8 @@ var diont = require('diont')({
 Diont can also use `broadcast` instead of `multicast` to send its messages, which should work a little more reliable, but clutters the network a bit more. You can use `broadcast` like this:
 
 ```javascript
-var diont = require('diont')({
+import Diont from 'diont';
+const diont = Diont({
 	broacast: true
 });
 ```

@@ -1,4 +1,5 @@
-var diont = require('../diont.js')();
+import Diont from '../diont.js';
+const diont = Diont();
 
 // ======
 // Announce our own service
