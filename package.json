@@ -5,9 +5,7 @@
 	"main": "./dist/index.js",
 	"scripts": {
 		"prebuild": "npm run clean",
-		"prestart": "npm run clean",
 		"build": "tsc --declaration --declarationMap --sourceMap",
-		"start": "tsc && node ./dist/index.js",
 		"clean": "rimraf ./dist/"
 	},
 	"type": "module",
