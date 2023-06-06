@@ -1,4 +1,4 @@
-import Diont from '../src/index'
+import Diont from '../src/index.js'
 
 const diont = Diont()
 
