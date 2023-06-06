@@ -26,7 +26,8 @@
 		"skipLibCheck": false,
 		"outDir": "./dist/",
 		"typeRoots": ["./node_modules/@types"],
-		"rootDir": "./src/"
+		"rootDir": "./src/",
+		"moduleResolution": "node"
 	},
 	"include": ["src"]
 }

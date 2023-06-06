@@ -34,6 +34,7 @@
 	},
 	"homepage": "https://github.com/willemmulder/Diont",
 	"devDependencies": {
+		"@types/node": "^20.2.5",
 		"rimraf": "^5.0.1",
 		"typescript": "^5.1.3"
 	}
