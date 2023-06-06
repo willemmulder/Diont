@@ -29,6 +29,10 @@ export interface IService {
 	[key: string]: unknown
 }
 
+export type IOptionalHostService = Omit<IService, 'host'> & {
+	host?: IService['host']
+}
+
 export interface IServiceInfo {
 	isOurService: boolean
 	service: IService
@@ -50,8 +54,12 @@ export type IMessage =
 	  }
 
 export interface IExports {
-	announceService: (service: IService) => void
-	renounceService: (service: IService) => void
+	announceService: (
+		service: IOptionalHostService
+	) => `${string}:${string}:${string}` | null
+	renounceService: (
+		service: IService | `${string}:${string}:${string}`
+	) => void
 	repeatAnnouncements: () => void
 	queryForServices: () => void
 	on: (eventName: IEvents, callback: IEventCallback) => string
@@ -134,8 +142,6 @@ export default function Diont(options: Partial<IDiontOptions> = {}): IExports {
 
 				const service = serviceInfo.service
 
-				if (!service.host || !service.port || !service.name) continue
-
 				const id = serviceToId(service)
 
 				if (eventType == 'announce') {
@@ -178,25 +184,24 @@ export default function Diont(options: Partial<IDiontOptions> = {}): IExports {
 	// Exported functions
 	// =====
 
-	const exportAnnounceService = function (service: IService) {
-		if (!getNetworkIPAddress()) return
+	const exportAnnounceService = function (service: IOptionalHostService) {
+		if (!getNetworkIPAddress()) return null
 
 		if (!service.host) service.host = getNetworkIPAddress() as string
 
-		if (!service.host || !service.port || !service.name) {
-			return false
-		}
+		const populatedService = service as IService
 
-		const id = serviceToId(service)
+		const id = serviceToId(populatedService)
 
 		if (!serviceInfos[id]) {
 			const serviceInfo = (serviceInfos[id] = {
 				isOurService: true,
-				service: service,
+				service: populatedService,
 			})
 
 			sendAnnouncement(serviceInfo)
 		}
+
 		return id
 	}
 
@@ -207,8 +212,6 @@ export default function Diont(options: Partial<IDiontOptions> = {}): IExports {
 		if (typeof service == 'string') {
 			id = service
 		} else {
-			if (!service.host || !service.port || !service.name) return false
-
 			id = serviceToId(service)
 		}
 
@@ -322,7 +325,7 @@ export default function Diont(options: Partial<IDiontOptions> = {}): IExports {
 		return `${s4()}${s4()}-${s4()}-${s4()}-${s4()}-${s4()}${s4()}${s4()}${s4()}`
 	}
 
-	function serviceToId(service: IService) {
+	function serviceToId(service: IService): `${string}:${string}:${string}` {
 		return `${service.host}:${service.port}:${service.name}`
 	}
 
