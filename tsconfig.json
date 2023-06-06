@@ -27,7 +27,10 @@
 		"outDir": "./dist/",
 		"typeRoots": ["./node_modules/@types"],
 		"rootDir": "./src/",
-		"moduleResolution": "node"
+		"moduleResolution": "node",
+		"declaration": true,
+		"sourceMap": true
 	},
-	"include": ["src"]
+	"include": ["src"],
+	"exclude": ["node_modules/"]
 }
