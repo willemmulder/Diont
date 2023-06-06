@@ -73,7 +73,7 @@ export default function Diont(options: IDiontOptions): IExports {
 	const broadcast = options.broadcast
 
 	const multicastHost = options.host || MULTICAST_HOST
-	const port = options.port || ALL_PORT
+	const port = parseInt(options.port as unknown as string, 10) || ALL_PORT
 	const ttl = options.ttl || MULTICAST_TTL
 	const sendHost = broadcast ? BROADCAST_HOST : multicastHost
 
