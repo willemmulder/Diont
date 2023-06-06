@@ -1,17 +1,14 @@
-import Diont from '../dist/index.js'
+import Diont from '../src/index'
 
-const diont = Diont({
-	broadcast: true,
-})
+const diont = Diont()
 
 // ======
 // Announce our own service
 // ======
 const service = {
-	name: 'TestServer 3',
-	// host: "127.0.0.1", // defaults to the local IP
-	port: '1233',
-	announcedViaBroadcast: 'Oh yes!',
+	name: 'TestServer 1',
+	host: '127.0.0.1', // defaults to the local IP
+	port: '1231',
 	// any additional information is allowed
 }
 

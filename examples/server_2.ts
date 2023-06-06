@@ -1,4 +1,4 @@
-import Diont from '../dist/index.js'
+import Diont from '../src/index'
 
 const diont = Diont()
 
@@ -13,9 +13,11 @@ const service = {
 	// any additional information is allowed
 }
 
-diont.announceService(service)
+const id = diont.announceService(service)
 
 // Renounce after 5 seconds
 setTimeout(function () {
-	diont.renounceService(service)
+	if (id) {
+		diont.renounceService(id)
+	}
 }, 5000)

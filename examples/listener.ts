@@ -1,4 +1,4 @@
-import Diont from '../dist/index.js'
+import Diont from '../src/index'
 
 const diont = Diont({
 	broadcast: true,
