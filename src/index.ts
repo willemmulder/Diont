@@ -24,7 +24,9 @@ export interface IDiontOptions {
 export interface IService {
 	name: string
 	host: string
-	port: number
+	port: number | string
+
+	[key: string]: unknown
 }
 
 export interface IServiceInfo {
