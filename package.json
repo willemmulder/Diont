@@ -2,8 +2,11 @@
 	"name": "diont",
 	"version": "1.0.0",
 	"description": "Easy Service Discovery on Local Networks in pure Javascript",
-	"main": "./dist/index.js",
-	"files": ["dist/**/*"],
+	"main": "dist/index.js",
+	"files": [
+		"dist/**/*"
+	],
+	"types": "dist/index.d.ts",
 	"scripts": {
 		"prebuild": "npm run clean",
 		"build": "tsc",
@@ -15,6 +18,7 @@
 		"url": "https://github.com/willemmulder/Diont"
 	},
 	"keywords": [
+		"typescript",
 		"udp",
 		"multicast",
 		"broadcast",
