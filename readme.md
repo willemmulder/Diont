@@ -57,11 +57,13 @@ const service: IService = {
 	// any additional information is allowed and will be propagated
 }
 
-diont.announceService(service)
+const serviceId = diont.announceService(service)
 
 // Renounce after 5 seconds
 setTimeout(function () {
-	diont.renounceService(service)
+	if (!serviceId) return
+
+	diont.renounceService(serviceId)
 }, 5000)
 ```
 
@@ -98,7 +100,7 @@ const diont = Diont({
 If you're experiencing a situation where Diont [stops working after awhile](https://github.com/willemmulder/Diont/issues/2) you might actually just need to trigger a manual query.
 
 ```typescript
-diont.queryForServices();
+diont.queryForServices()
 ```
 
 This causes Diont to send a UDP packet to the network with event "query". Diont servers are designed to take this event and re-broadcast their registered services. This re-broadcasting does not happen automatically on an interval -- so if you need that you must use this method.
