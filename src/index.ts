@@ -59,7 +59,7 @@ export interface IExports {
 	getServiceInfos: () => IServiceInfo[]
 }
 
-export default function Diont(options: IDiontOptions): IExports {
+export default function Diont(options: Partial<IDiontOptions> = {}): IExports {
 	const instanceId = guid()
 
 	const serviceInfos: Record<string, IServiceInfo> = {}
