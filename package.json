@@ -10,7 +10,11 @@
 	"scripts": {
 		"prebuild": "npm run clean",
 		"build": "tsc",
-		"clean": "rimraf ./dist/"
+		"clean": "rimraf ./dist/",
+		"example:listener": "ts-node-esm ./examples/listener.ts",
+		"example:server:1": "ts-node-esm ./examples/server_1.ts",
+		"example:server:2": "ts-node-esm ./examples/server_2.ts",
+		"example:server:3:broadcast": "ts-node-esm ./examples/server_3_broadcast.ts"
 	},
 	"type": "module",
 	"repository": {
