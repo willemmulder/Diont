@@ -60,22 +60,22 @@ export interface IExports {
 }
 
 export default function Diont(options: IDiontOptions): IExports {
-	let instanceId = guid()
+	const instanceId = guid()
 
-	let serviceInfos: Record<string, IServiceInfo> = {}
-	let events: Record<IEvents, Record<string, IEventCallback>> = {
+	const serviceInfos: Record<string, IServiceInfo> = {}
+	const events: Record<IEvents, Record<string, IEventCallback>> = {
 		serviceAnnounced: {},
 		serviceRenounced: {},
 	}
 
 	options = options || {}
 
-	let broadcast = options.broadcast
+	const broadcast = options.broadcast
 
-	let multicastHost = options.host || MULTICAST_HOST
-	let port = options.port || ALL_PORT
-	let ttl = options.ttl || MULTICAST_TTL
-	let sendHost = broadcast ? BROADCAST_HOST : multicastHost
+	const multicastHost = options.host || MULTICAST_HOST
+	const port = options.port || ALL_PORT
+	const ttl = options.ttl || MULTICAST_TTL
+	const sendHost = broadcast ? BROADCAST_HOST : multicastHost
 
 	// Services is a map (service.host+":"+service.port+":"+service.name) => Object serviceInfo
 	// where serviceInfo is an object like
@@ -190,10 +190,11 @@ export default function Diont(options: IDiontOptions): IExports {
 		const id = serviceToId(service)
 
 		if (!serviceInfos[id]) {
-			let serviceInfo = (serviceInfos[id] = {
+			const serviceInfo = (serviceInfos[id] = {
 				isOurService: true,
 				service: service,
 			})
+
 			sendAnnouncement(serviceInfo)
 		}
 		return id
@@ -326,8 +327,8 @@ export default function Diont(options: IDiontOptions): IExports {
 	}
 
 	function getNetworkIPAddress(): string | null {
-		let networkInterfaces = os.networkInterfaces()
-		let addresses: string[] = []
+		const networkInterfaces = os.networkInterfaces()
+		const addresses: string[] = []
 		let localAddress: string = ''
 
 		for (let dev in networkInterfaces) {
