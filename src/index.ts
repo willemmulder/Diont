@@ -3,11 +3,8 @@ import dgram from 'dgram'
 
 const socket = dgram.createSocket({
 	type: 'udp4',
-	reuseAddr: true,
-	toString: function () {
-		return 'udp4'
-	},
-} as any)
+	reuseAddr: true
+})
 
 const MULTICAST_HOST = '224.0.0.236' as const
 const BROADCAST_HOST = '255.255.255.255' as const
