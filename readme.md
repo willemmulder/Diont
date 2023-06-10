@@ -1,6 +1,6 @@
 # Diont
 
-Easy Service Discovery on Local Networks in pure Javascript.
+Easy Service Discovery on Local Networks in pure Javascript / Typescript.
 
 ## Used in
 
@@ -10,9 +10,10 @@ Easy Service Discovery on Local Networks in pure Javascript.
 
 -   100% javascript: no external dependencies
 -   100% complete: no node dependencies
--   allows for transmitting extra, arbitrary service information
--   includes examples
--   also available for Cordova/Phonegap as [Diont for Cordova](https://github.com/willemmulder/Diont-for-Cordova)
+-   Typescript types
+-   Allows for transmitting extra, arbitrary service information
+-   Includes examples
+-   Also available for Cordova/Phonegap as [Diont for Cordova](https://github.com/willemmulder/Diont-for-Cordova)
 
 ## Installation
 
@@ -75,7 +76,7 @@ If service-messages are not propagated properly (especially on wifi connections)
 
 Diont supports manual setting of the TTL. From experience, the default TTL of 1 does not always cause routers to forward the service-messages to the whole network, so you might want to try higher values and see if that works.
 
-```javascript
+```typescript
 import Diont from 'diont'
 
 const diont = Diont({
@@ -87,7 +88,7 @@ const diont = Diont({
 
 Diont can also use `broadcast` instead of `multicast` to send its messages, which should work a little more reliable, but clutters the network a bit more. You can use `broadcast` like this:
 
-```javascript
+```typescript
 import Diont from 'diont'
 
 const diont = Diont({
